@@ -8,6 +8,8 @@ import { WalletConnectConnector } from "wagmi/connectors/walletConnect"
 import { publicProvider } from "wagmi/providers/public"
 import "../styles/tailwind.css"
 import { WalletContextProvider } from "context/wallet-context"
+import { ConfigProvider } from "antd"
+import { ConfigProviderProps, ThemeConfig } from "antd/es/config-provider"
 
 function MyApp({ Component, pageProps }: AppProps) {
   /**
@@ -44,10 +46,18 @@ function MyApp({ Component, pageProps }: AppProps) {
     publicClient,
   })
 
+  const themeConfig: ThemeConfig = {
+    token: {
+      colorPrimary: "#111111",
+    },
+  }
+
   return (
     <WagmiConfig config={config}>
       <WalletContextProvider config={config}>
-        <Component {...pageProps} />
+        <ConfigProvider theme={themeConfig}>
+          <Component {...pageProps} />
+        </ConfigProvider>
       </WalletContextProvider>
     </WagmiConfig>
   )
