@@ -40,3 +40,35 @@ export const registerPasswordFieldRules: Rule[] = [
     },
   },
 ]
+
+export const loginPasswordFieldRules: Rule[] = [
+  {
+    required: true,
+    message: "Password is required!",
+  },
+]
+
+export const yearOfExperienceFieldRules: Rule[] = [
+  {
+    required: true,
+    message: "Year of experience is required",
+  },
+  {
+    validator: (_, value) => {
+      const containsNumber = /[0-9]/.test(value)
+
+      if (!containsNumber) {
+        return Promise.reject(new Error("Please input a number!"))
+      }
+
+      return Promise.resolve()
+    },
+  },
+]
+
+export const specialityFieldRules: Rule[] = [
+  {
+    required: true,
+    message: "Speciality is required",
+  },
+]

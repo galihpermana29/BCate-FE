@@ -3,6 +3,7 @@ import { Button, Checkbox, Form, FormProps, Input } from "antd"
 import Link from "next/link"
 import { useState } from "react"
 import AuthCenterLayout from "components/layouts/auth-center-layout"
+import { emailFieldRules, loginPasswordFieldRules } from "utils/form-rules"
 
 type FieldType = {
   email: string
@@ -37,8 +38,8 @@ function LoginPage() {
             <label htmlFor="email" className="text-zinc-500">
               Email or phone number
             </label>
-            <Form.Item<FieldType> name="email" rules={[{ required: true, type: "email", message: "Invalid email!" }]}>
-              <Input className="mt-1 py-2" />
+            <Form.Item<FieldType> name="email" rules={emailFieldRules}>
+              <Input id="email" className="mt-1 py-2" />
             </Form.Item>
           </div>
 
@@ -57,8 +58,8 @@ function LoginPage() {
                 <span className="block">{showPassword ? "Hide" : "Show"}</span>
               </Button>
             </div>
-            <Form.Item<FieldType> name="password" rules={[{ required: true, message: "Wrong password!" }]}>
-              <Input type={showPassword ? "text" : "password"} className="mt-1 py-2" />
+            <Form.Item<FieldType> name="password" rules={loginPasswordFieldRules}>
+              <Input id="password" type={showPassword ? "text" : "password"} className="mt-1 py-2" />
             </Form.Item>
           </div>
 

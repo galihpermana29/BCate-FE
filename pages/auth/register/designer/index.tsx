@@ -3,11 +3,19 @@ import { Button, Form, FormProps, Input } from "antd"
 import Link from "next/link"
 import { useState } from "react"
 import AuthSideLayout from "components/layouts/auth-side-layout"
-import { emailFieldRules, fullNameFieldRules, registerPasswordFieldRules } from "utils/form-rules"
+import {
+  emailFieldRules,
+  fullNameFieldRules,
+  registerPasswordFieldRules,
+  specialityFieldRules,
+  yearOfExperienceFieldRules,
+} from "utils/form-rules"
 
 type FieldType = {
   fullName: string
   email: string
+  yearOfExperience: number
+  speciality: string
   password: string
 }
 
@@ -19,18 +27,18 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
   console.log("Failed:", errorInfo)
 }
 
-function UserRegister() {
+function DesignerRegister() {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
     <AuthSideLayout>
       <Form
-        name="userRegister"
+        name="userRegiDesigner"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         className="w-full rounded-xl bg-white p-5 md:p-10 md:pt-5"
       >
-        <h1 className="mb-10 text-3xl font-medium">Sign up as a User</h1>
+        <h1 className="mb-10 text-3xl font-medium">Sign up as a Designer</h1>
 
         <div className="flex flex-col">
           <div>
@@ -48,6 +56,24 @@ function UserRegister() {
             </label>
             <Form.Item<FieldType> name="email" rules={emailFieldRules}>
               <Input id="email" className="mt-1 py-2" />
+            </Form.Item>
+          </div>
+
+          <div>
+            <label htmlFor="yearOfExperience" className="text-zinc-500">
+              Year of experience
+            </label>
+            <Form.Item<FieldType> name="yearOfExperience" rules={yearOfExperienceFieldRules}>
+              <Input id="yearOfExperience" className="mt-1 py-2" />
+            </Form.Item>
+          </div>
+
+          <div>
+            <label htmlFor="speciality" className="text-zinc-500">
+              Speciality
+            </label>
+            <Form.Item<FieldType> name="speciality" rules={specialityFieldRules}>
+              <Input.TextArea id="speciality" className="mt-1 py-2" autoSize={{ minRows: 2, maxRows: 10 }} />
             </Form.Item>
           </div>
 
@@ -94,4 +120,4 @@ function UserRegister() {
   )
 }
 
-export default UserRegister
+export default DesignerRegister
