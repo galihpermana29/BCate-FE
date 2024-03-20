@@ -1,13 +1,14 @@
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons"
-import { Button, Checkbox, Form, FormProps, Input } from "antd"
+import { Button, Form, FormProps, Input } from "antd"
 import Link from "next/link"
 import { useState } from "react"
-import AuthCenterLayout from "components/layouts/auth-center-layout"
+import AuthSideLayout from "components/layouts/auth-side-layout"
+import { emailFieldRules, fullNameFieldRules, registerPasswordFieldRules } from "utils/form-rules"
 
 type FieldType = {
+  fullName: string
   email: string
   password: string
-  remember?: boolean
 }
 
 const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -18,26 +19,34 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
   console.log("Failed:", errorInfo)
 }
 
-function LoginPage() {
+function UserRegister() {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <AuthCenterLayout>
+    <AuthSideLayout>
       <Form
-        name="userSignIn"
-        initialValues={{ remember: true }}
+        name="userRegister"
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        className="mx-5 flex w-full flex-col gap-5 rounded-xl bg-white p-7 pt-10 sm:w-2/3 md:mx-10 md:w-1/2 md:p-10 md:pt-14 lg:w-1/3"
+        className="w-full rounded-xl bg-white p-10 pt-5"
       >
-        <h1 className="text-3xl font-medium">Sign in</h1>
+        <h1 className="mb-10 text-3xl font-medium">Sign up as a user</h1>
 
         <div className="flex flex-col">
           <div>
-            <label htmlFor="email" className="text-zinc-500">
-              Email or phone number
+            <label htmlFor="fullName" className="text-zinc-500">
+              Full Name
             </label>
-            <Form.Item<FieldType> name="email" rules={[{ required: true, type: "email", message: "Invalid email!" }]}>
+            <Form.Item<FieldType> name="fullName" rules={fullNameFieldRules}>
+              <Input className="mt-1 py-2" />
+            </Form.Item>
+          </div>
+
+          <div>
+            <label htmlFor="email" className="text-zinc-500">
+              Email address
+            </label>
+            <Form.Item<FieldType> name="email" rules={emailFieldRules}>
               <Input className="mt-1 py-2" />
             </Form.Item>
           </div>
@@ -57,39 +66,32 @@ function LoginPage() {
                 <span className="block">{showPassword ? "Hide" : "Show"}</span>
               </Button>
             </div>
-            <Form.Item<FieldType> name="password" rules={[{ required: true, message: "Wrong password!" }]}>
+            <Form.Item<FieldType> name="password" rules={registerPasswordFieldRules}>
               <Input type={showPassword ? "text" : "password"} className="mt-1 py-2" />
             </Form.Item>
           </div>
+        </div>
 
+        <div className="mt-3 flex items-center gap-5">
+          <Form.Item className="m-0">
+            <Button
+              disabled
+              htmlType="submit"
+              className="m-0 h-fit rounded-full bg-black px-10 py-3 text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
+            >
+              Sign up
+            </Button>
+          </Form.Item>
           <div>
-            <Form.Item>
-              <Button
-                htmlType="submit"
-                className="mt-3 h-fit w-full rounded-full bg-black py-3 text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
-              >
-                Sign in
-              </Button>
-            </Form.Item>
-
-            <div className="-mt-2 flex h-10 items-center justify-between gap-2 text-xs">
-              <Form.Item<FieldType> name="remember" valuePropName="checked" className="m-0">
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-              <div className="h-fit">Need help?</div>
-            </div>
+            Already have an account?{" "}
+            <Link href={"/auth"} className="font-medium underline">
+              Log in
+            </Link>
           </div>
         </div>
-
-        <div className="mt-10 text-sm">
-          Don&apos;t have an acount?{" "}
-          <Link href={"/auth"} className="font-medium underline">
-            Sign up
-          </Link>
-        </div>
       </Form>
-    </AuthCenterLayout>
+    </AuthSideLayout>
   )
 }
 
-export default LoginPage
+export default UserRegister
