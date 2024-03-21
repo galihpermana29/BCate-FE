@@ -17,12 +17,14 @@ function Header() {
   }
 
   return (
-    <header className="sticky top-0 flex h-20 shadow-lg">
+    <header className="sticky top-0 z-20 flex h-20 shadow-lg">
       <div className="relative aspect-square h-full bg-black">
         <Image src={"/assets/img/logo.png"} alt="Logo" fill className="object-contain" />
       </div>
       <div className="flex h-full w-full items-center justify-between bg-white px-5 md:px-10">
-        <h1 className="font-plaifair text-3xl font-medium">Bcate</h1>
+        <Link href={"/"} className="font-playfair text-3xl font-medium">
+          Bcate
+        </Link>
         <div className="hidden gap-4 md:flex">
           <Button
             href="/auth/sign-in"
@@ -51,7 +53,7 @@ function Header() {
                     <div className="relative h-7 w-7">
                       <Image src={`/assets/img/icon-${image}.png`} alt={`${label} Icon`} fill />
                     </div>
-                    <p className="font-code text-center text-xs">{label}</p>
+                    <p className="text-center font-code text-xs">{label}</p>
                   </Link>
                 )
               })}

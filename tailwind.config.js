@@ -66,7 +66,7 @@ module.exports = {
           "Segoe UI Symbol",
           "Noto Color Emoji",
         ],
-        plaifair: ["Playfair Display", "serif"],
+        playfair: ["Playfair Display", "serif"],
         code: ["Source Code Pro", "monospace"],
       },
       borderWidth: {
