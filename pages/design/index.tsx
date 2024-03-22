@@ -8,10 +8,6 @@ import { DesignFilter } from "utils/interface_type"
 function DesignPage() {
   const [currentFilter, setCurrentFilter] = useState<DesignFilter>(null)
 
-  const onChange = (currentSlide: number) => {
-    console.log(currentSlide)
-  }
-
   const handleFilter = (filter: DesignFilter) => {
     if (currentFilter !== null && currentFilter === filter) {
       setCurrentFilter(null)
@@ -22,29 +18,20 @@ function DesignPage() {
 
   return (
     <MainLayout>
-      <Carousel autoplay afterChange={onChange}>
-        <div>
-          <div className="relative aspect-[16/7] w-full bg-zinc-100">
-            <Image
-              src={
-                "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              }
-              alt="Carouse Image"
-              fill
-            />
-          </div>
-        </div>
-        <div>
-          <div className="relative aspect-[16/7] w-full bg-zinc-100">
-            <Image
-              src={
-                "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              }
-              alt="Carouse Image"
-              fill
-            />
-          </div>
-        </div>
+      <Carousel autoplay>
+        {[...Array(3)].map((_, index) => {
+          return (
+            <div key={index} className="relative aspect-[16/7] w-full bg-zinc-100">
+              <Image
+                src={
+                  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                }
+                alt="Carouse Image"
+                fill
+              />
+            </div>
+          )
+        })}
       </Carousel>
 
       <section className="mt-10 flex flex-col justify-between gap-10 lg:flex-row lg:items-center lg:gap-20">
