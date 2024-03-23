@@ -1,6 +1,5 @@
 import Image from "next/image"
-import profileBlue from "assets/blue-profile.png"
-import profileWhite from "assets/gray-profile.png"
+import profileBlue from "public/assets/img/blue-profile.png"
 import { ChatDataI } from "utils/chat-data"
 import { truncateText } from "utils/function"
 
