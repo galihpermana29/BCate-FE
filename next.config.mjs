@@ -8,6 +8,16 @@ import { env } from "./env.mjs"
 const config = withPlugins([[withBundleAnalyzer({ enabled: env.ANALYZE })]], {
   reactStrictMode: true,
   experimental: { instrumentationHook: true },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+        port: "",
+        pathname: "**",
+      },
+    ],
+  },
   rewrites() {
     return [
       { source: "/healthz", destination: "/api/health" },
