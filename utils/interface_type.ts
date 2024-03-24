@@ -43,4 +43,4 @@ export interface NavMenuItem {
   image: string
 }
 
-export type DesignFilter = "building" | "furniture" | null
+export type DesignType = "building" | "furniture" | null

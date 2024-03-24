@@ -32,7 +32,8 @@ export interface User {
   id?: number
   fullName: string
   email: string
-  role: string
+  profile_picture?: string
+  role: "designer" | "user"
   additional?: UserAdditional
   password?: string
 }
@@ -40,4 +41,32 @@ export interface User {
 export interface UserAdditional {
   speciality: string
   years_experience: number
+}
+
+export interface Design {
+  id: string
+  author: User
+  name: string
+  certificate_url: string
+  description: string
+  permission?: string[]
+  image_url: string[]
+  price: number
+  purpose: string
+  spesification: string
+  type: string
+  transactions: Transaction[]
+}
+
+export interface Transaction {
+  id: number
+  designId: number
+  userId: number
+  revision?: string
+  createdAt: Date
+}
+
+export interface DesignResponse {
+  message: string[]
+  data: Design[]
 }
