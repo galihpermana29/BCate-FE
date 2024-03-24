@@ -50,10 +50,10 @@ export interface Design {
   certificate_url: string
   description: string
   permission?: string[]
-  image_url: string[]
+  image_uri: string[]
   price: number
   purpose: string
-  spesification: string
+  specification: string
   type: string
   transactions: Transaction[]
 }
@@ -69,4 +69,19 @@ export interface Transaction {
 export interface DesignResponse {
   message: string[]
   data: Design[]
+}
+
+export interface DesignDetailResponse {
+  message: string[]
+  data: Design
+}
+
+export interface CreateTransactionRespose {
+  message: string[]
+  data: number
+}
+
+export interface CreateTransactionPayload {
+  user_id: number
+  design_id: number
 }

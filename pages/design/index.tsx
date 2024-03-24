@@ -12,29 +12,27 @@ function DesignPage() {
   const [currentType, setCurrentType] = useState<DesignType>(null)
   const [designs, setDesigns] = useState<Design[]>([])
 
-  const { token } = useAuth()
+  const { authData } = useAuth()
 
   useEffect(() => {
     const getAllDesign = async () => {
-      if (token) {
-        try {
-          let res: DesignResponse
+      try {
+        let res: DesignResponse
 
-          if (currentType) {
-            res = await DesignAPI.getAll(token ?? "", currentType)
-          } else {
-            res = await DesignAPI.getAll(token ?? "")
-          }
-
-          setDesigns(res.data)
-        } catch (e) {
-          console.log(e)
+        if (currentType) {
+          res = await DesignAPI.getAll(authData?.token ?? "", currentType)
+        } else {
+          res = await DesignAPI.getAll(authData?.token ?? "")
         }
+
+        setDesigns(res.data)
+      } catch (e) {
+        console.log(e)
       }
     }
 
-    getAllDesign()
-  }, [token, currentType])
+    if (authData) getAllDesign()
+  }, [authData, currentType])
 
   const handleFilter = (filter: DesignType) => {
     if (currentType !== null && currentType === filter) {
@@ -46,7 +44,7 @@ function DesignPage() {
 
   return (
     <>
-      {token && (
+      {authData && (
         <MainLayout>
           <Carousel autoplay>
             {[...Array(3)].map((_, index) => {

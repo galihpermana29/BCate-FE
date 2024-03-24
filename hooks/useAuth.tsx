@@ -7,19 +7,17 @@ type UserAuthData = {
 }
 
 function useAuth() {
-  const [userData, setUserData] = useState<User | undefined>()
-  const [token, setToken] = useState<string | undefined>()
+  const [authData, setAuthData] = useState<UserAuthData | undefined>()
 
   useEffect(() => {
     if (localStorage) {
       const loginData = JSON.parse(localStorage.getItem("user-data")!) as UserAuthData
 
-      setUserData(loginData.user)
-      setToken(loginData.token)
+      setAuthData(loginData)
     }
   }, [])
 
-  return { userData, token }
+  return { authData }
 }
 
 export default useAuth

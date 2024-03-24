@@ -2,11 +2,11 @@ import Image from "next/image"
 import Link from "next/link"
 import { Design } from "api/response-interface"
 
-function DesignCardVertical({ author, name, description, price, id, type, permission, image_url }: Design) {
+function DesignCardVertical({ author, name, description, price, id, type, permission, image_uri }: Design) {
   return (
     <div className="overflow-hidden rounded-lg shadow-md">
       <div className="relative aspect-[16/9] w-full bg-zinc-100">
-        {image_url && <Image src={image_url[0]} alt="Card Image" fill className="object-cover" />}
+        {image_uri && <Image src={image_uri[0]} alt="Card Image" fill className="object-cover" />}
       </div>
       <div className="flex flex-col gap-2 p-5 font-code text-sm">
         <h3 className="text-lg font-medium">{name}</h3>
