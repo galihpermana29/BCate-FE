@@ -7,6 +7,7 @@ import { env } from "./env.mjs"
  */
 const config = withPlugins([[withBundleAnalyzer({ enabled: env.ANALYZE })]], {
   reactStrictMode: true,
+  // transpilePackages: ["antd", "@ant-design/icons", "@ant-design/icons-svg"],
   experimental: { instrumentationHook: true },
   images: {
     remotePatterns: [
