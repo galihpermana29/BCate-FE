@@ -17,9 +17,8 @@ export interface RootLoginPayloadI {
 export interface RootRegisterPayloadI extends User {}
 
 export interface RootRegisterResponseI {
-  /**
-   * TODO dont forget to add this interface
-   */
+  messages: string[]
+  data: number
 }
 // structure of object
 
