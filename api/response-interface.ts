@@ -1,5 +1,7 @@
 // structure of response/payload
 
+import { UserRole } from "utils/interface_type"
+
 /**
  * TODO: plase update all of this based on current response from be
  */
@@ -32,7 +34,7 @@ export interface User {
   fullName: string
   email: string
   profile_picture?: string
-  role: "designer" | "user"
+  role: UserRole
   additional?: UserAdditional
   password?: string
 }

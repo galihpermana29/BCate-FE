@@ -1,4 +1,4 @@
-import { DesignType } from "utils/interface_type"
+import { DesignType, UserRole } from "utils/interface_type"
 import { ApiClass } from "./api"
 import { config } from "./config"
 import {
@@ -33,6 +33,15 @@ class DesignService extends ApiClass {
   public async createTransaction(payload: CreateTransactionPayload, token: string): Promise<CreateTransactionRespose> {
     try {
       const { data } = await this.axiosInstance.post<CreateTransactionRespose>("/transaction", payload, config(token))
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async getCollection(token: string, role: UserRole, id: number): Promise<DesignResponse> {
+    try {
+      const { data } = await this.axiosInstance.get<DesignResponse>(`design/collection-${role}/${id}`, config(token))
       return data
     } catch (error) {
       throw error
