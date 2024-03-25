@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react"
 import { User } from "api/response-interface"
 
-type UserAuthData = {
+export type UserAuthData = {
   token: string
   user: User
 }
 
+/**
+ * Null means loading true
+ * Undefined means user haven't log in
+ * The res
+ * @returns
+ */
+
 function useAuth() {
-  const [authData, setAuthData] = useState<UserAuthData | undefined>()
+  const [authData, setAuthData] = useState<UserAuthData | null | undefined>(null)
 
   useEffect(() => {
     if (localStorage) {

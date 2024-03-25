@@ -48,7 +48,7 @@ function DesignDetailPage() {
 
   return (
     <>
-      {authData && design && (
+      {design && (
         <MainLayout>
           <Carousel autoplay>
             {design.image_uri.map((url, index) => {
