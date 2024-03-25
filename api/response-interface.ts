@@ -1,6 +1,6 @@
 // structure of response/payload
 
-import { UserRole } from "utils/interface_type"
+import { DesignPurpose, UserRole } from "utils/interface_type"
 
 /**
  * TODO: plase update all of this based on current response from be
@@ -53,7 +53,7 @@ export interface Design {
   permission?: string[]
   image_uri: string[]
   price: number
-  purpose: string
+  purpose: DesignPurpose
   specification: string
   type: string
   transactions: Transaction[]

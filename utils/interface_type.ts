@@ -44,4 +44,5 @@ export interface NavMenuItem {
 }
 
 export type DesignType = "building" | "furniture" | null
+export type DesignPurpose = "requested" | "design"
 export type UserRole = "designer" | "user"
