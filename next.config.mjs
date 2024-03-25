@@ -17,6 +17,12 @@ const config = withPlugins([[withBundleAnalyzer({ enabled: env.ANALYZE })]], {
         port: "",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "**",
+      },
     ],
   },
   rewrites() {

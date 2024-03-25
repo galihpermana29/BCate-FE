@@ -1,5 +1,7 @@
 // structure of response/payload
 
+import { DesignPurpose, UserRole } from "utils/interface_type"
+
 /**
  * TODO: plase update all of this based on current response from be
  */
@@ -31,7 +33,8 @@ export interface User {
   id?: number
   fullName: string
   email: string
-  role: "designer" | "user"
+  profile_picture?: string
+  role: UserRole
   additional?: UserAdditional
   password?: string
 }
@@ -39,4 +42,47 @@ export interface User {
 export interface UserAdditional {
   speciality: string
   years_experience: number
+}
+
+export interface Design {
+  id: string
+  author: User
+  name: string
+  certificate_url: string
+  description: string
+  permission?: string[]
+  image_uri: string[]
+  price: number
+  purpose: DesignPurpose
+  specification: string
+  type: string
+  transactions: Transaction[]
+}
+
+export interface Transaction {
+  id: number
+  designId: number
+  userId: number
+  revision?: string
+  createdAt: Date
+}
+
+export interface DesignResponse {
+  message: string[]
+  data: Design[]
+}
+
+export interface DesignDetailResponse {
+  message: string[]
+  data: Design
+}
+
+export interface CreateTransactionRespose {
+  message: string[]
+  data: number
+}
+
+export interface CreateTransactionPayload {
+  user_id: number
+  design_id: number
 }
