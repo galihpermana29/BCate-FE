@@ -2,11 +2,16 @@ import { MenuOutlined } from "@ant-design/icons"
 import { Button, Drawer } from "antd"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { navMenus } from "data/nav-menus"
+import useAuth from "hooks/useAuth"
 
 function Header() {
   const [open, setOpen] = useState(false)
+  const router = useRouter()
+
+  const { authData } = useAuth()
 
   const showDrawer = () => {
     setOpen(true)
@@ -14,6 +19,12 @@ function Header() {
 
   const onClose = () => {
     setOpen(false)
+  }
+
+  const handleSignOut = () => {
+    localStorage.removeItem("user-data")
+
+    router.push("/auth/sign-in")
   }
 
   return (
@@ -26,13 +37,24 @@ function Header() {
           Bcate
         </Link>
         <div className="hidden gap-4 md:flex">
-          <Button
-            href="/auth/sign-in"
-            type="default"
-            className="m-0 h-fit rounded-lg border-black px-5 py-3 font-semibold hover:bg-zinc-100  disabled:bg-zinc-300"
-          >
-            Sign in
-          </Button>
+          {!authData && (
+            <Button
+              href="/auth/sign-in"
+              type="default"
+              className="m-0 h-fit rounded-lg border-black px-5 py-3 font-semibold hover:bg-zinc-100  disabled:bg-zinc-300"
+            >
+              Sign in
+            </Button>
+          )}
+          {authData && (
+            <Button
+              onClick={handleSignOut}
+              type="default"
+              className="m-0 h-fit rounded-lg border-black px-5 py-3 font-semibold hover:bg-zinc-100  disabled:bg-zinc-300"
+            >
+              Sign out
+            </Button>
+          )}
           <Button className="m-0 h-fit rounded-lg bg-black px-5 py-3 font-semibold text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300">
             Connect Wallet
           </Button>
