@@ -7,7 +7,7 @@ function SideNav() {
   const { authData } = useAuth()
 
   return (
-    <nav className="fixed top-20 z-20 hidden h-screen w-20 flex-col p-2 pt-10 shadow-lg md:flex">
+    <nav className="fixed top-20 z-20 hidden h-screen w-20 flex-col bg-white p-2 pt-10 shadow-lg md:flex">
       {authData &&
         authData.user.role === "user" &&
         userNavMenus.map(({ path, label, image }, index) => {
