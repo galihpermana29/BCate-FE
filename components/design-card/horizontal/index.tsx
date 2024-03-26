@@ -45,7 +45,7 @@ function DesignCardHorizontal({ author, description, id, type, image_uri, transa
             Send Message
           </Button>
           <Link
-            href={`/detail/request/${id}`}
+            href={`/design/request/${id}`}
             className="rounded-md bg-black px-10 py-2 text-center text-white transition-colors duration-150 hover:bg-zinc-800"
           >
             See Detail
