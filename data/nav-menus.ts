@@ -1,6 +1,6 @@
 import { NavMenuItem } from "utils/interface_type"
 
-export const navMenus: NavMenuItem[] = [
+export const userNavMenus: NavMenuItem[] = [
   {
     path: "/",
     label: "Home",
@@ -23,6 +23,34 @@ export const navMenus: NavMenuItem[] = [
   },
   {
     path: "/chat",
+    label: "Chat",
+    image: "chat",
+  },
+]
+
+export const designerNavMenus: NavMenuItem[] = [
+  {
+    path: "/profile",
+    label: "Profile",
+    image: "profile",
+  },
+  {
+    path: "/designer/transaction",
+    label: "Transaction",
+    image: "transaction",
+  },
+  {
+    path: "/designer/collection",
+    label: "Design Collection",
+    image: "collection",
+  },
+  {
+    path: "/designer/sell",
+    label: "Sell Design",
+    image: "sell",
+  },
+  {
+    path: "/designer/chat",
     label: "Chat",
     image: "chat",
   },

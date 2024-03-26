@@ -6,7 +6,7 @@ import CollectionCard from "components/collection-card"
 import MainLayout from "components/layouts/main-layout"
 import useAuth from "hooks/useAuth"
 
-function CollectionPage() {
+function DesignerCollectionPage() {
   const [collections, setCollections] = useState<Design[]>([])
 
   const { authData } = useAuth()
@@ -29,7 +29,7 @@ function CollectionPage() {
       {authData && (
         <main className="flex flex-col-reverse justify-between gap-10 lg:flex-row">
           <section className="grow">
-            <h1 className="text-4xl font-medium">My Collection</h1>
+            <h1 className="text-4xl font-medium">My Design Collection</h1>
             <div className="mt-5 flex flex-col gap-4">
               {collections.map((collection) => {
                 return <CollectionCard key={collection.id} {...collection} />
@@ -39,8 +39,8 @@ function CollectionPage() {
           <section className="relative flex h-screen w-full basis-2/5 flex-col items-center justify-center gap-3 overflow-hidden rounded-lg p-10 text-center text-white">
             <Image src={"/assets/img/banner-collection.png"} alt="Banner Image" fill className="-z-10 object-cover" />
 
-            <h2 className="text-2xl font-bold">My Collection</h2>
-            <p>Welcome to my collection showcasing the collection of designs that have been purchased</p>
+            <h2 className="text-2xl font-bold">Design Collection</h2>
+            <p>Welcome to Design collection showcasing the collection of designs that have been listed to sell</p>
           </section>
         </main>
       )}
@@ -48,4 +48,4 @@ function CollectionPage() {
   )
 }
 
-export default CollectionPage
+export default DesignerCollectionPage
