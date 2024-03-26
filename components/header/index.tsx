@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { navMenus } from "data/nav-menus"
+import { userNavMenus } from "data/nav-menus"
 import useAuth from "hooks/useAuth"
 
 function Header() {
@@ -65,7 +65,7 @@ function Header() {
         <Drawer placement="left" width={"60%"} onClose={onClose} open={open}>
           <div className="flex h-full flex-col justify-between gap-10">
             <div>
-              {navMenus.map(({ path, label, image }, index) => {
+              {userNavMenus.map(({ path, label, image }, index) => {
                 return (
                   <Link
                     key={index}
