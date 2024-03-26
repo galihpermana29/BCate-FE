@@ -1,4 +1,4 @@
-import { DesignType, UserRole } from "utils/interface_type"
+import { DesignPurpose, DesignType, UserRole } from "utils/interface_type"
 import { ApiClass } from "./api"
 import { config } from "./config"
 import {
@@ -9,10 +9,11 @@ import {
 } from "./response-interface"
 
 class DesignService extends ApiClass {
-  public async getAll(token: string, type?: DesignType): Promise<DesignResponse> {
+  public async getAll(token: string, purpose?: DesignPurpose, type?: DesignType): Promise<DesignResponse> {
     try {
       let endpoint = "/design"
-      if (type) endpoint += `?type=${type}`
+      if (purpose) endpoint += `?purpose=${purpose}`
+      if (type) endpoint += `&type=${type}`
 
       const { data } = await this.axiosInstance.get<DesignResponse>(endpoint, config(token))
       return data

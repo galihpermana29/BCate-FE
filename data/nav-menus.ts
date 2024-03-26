@@ -12,7 +12,7 @@ export const navMenus: NavMenuItem[] = [
     image: "blueprint",
   },
   {
-    path: "/request",
+    path: "/design/request",
     label: "Request",
     image: "request",
   },
