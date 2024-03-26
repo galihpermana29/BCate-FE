@@ -8,6 +8,11 @@ import { CreateTransactionPayload, Design } from "api/response-interface"
 import MainLayout from "components/layouts/main-layout"
 import useAuth from "hooks/useAuth"
 
+import { Timestamp, arrayUnion, doc, getDoc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore"
+
+import { db } from "firebase-config"
+import { v4 as uuidv4 } from "uuid"
+
 function DesignDetailPage() {
   const [design, setDesign] = useState<Design>()
 
@@ -35,8 +40,61 @@ function DesignDetailPage() {
         user_id: authData.user.id,
         design_id: parseInt(params.id as string),
       }
-
+      console.log(payload, "payload")
       await DesignAPI.createTransaction(payload, authData.token)
+
+      const userId: string = authData.user.id.toString()
+      const designerId: string = params.id as string
+      const collectionId: string = params.id as string
+
+      const combinedId: string =
+        parseInt(userId) > parseInt(designerId)
+          ? userId + designerId + collectionId
+          : designerId + userId + collectionId
+
+      const res = await getDoc(doc(db, "chats", combinedId))
+
+      if (!res.exists()) {
+        await setDoc(doc(db, "chats", combinedId), {
+          messages: arrayUnion({
+            id: uuidv4(),
+            text: `Helo ${design?.author.fullName}, I already checkout your design!`,
+            senderId: authData.user.id.toString(),
+            date: Timestamp.now(),
+          }),
+        })
+
+        const currentUserExist = await getDoc(doc(db, "userChats", userId))
+        const desginerExist = await getDoc(doc(db, "userChats", designerId))
+        if (!currentUserExist.exists()) {
+          await setDoc(doc(db, "userChats", userId), {})
+        }
+
+        if (!desginerExist.exists()) {
+          await setDoc(doc(db, "userChats", designerId), {})
+        }
+
+        await updateDoc(doc(db, "userChats", userId), {
+          [combinedId + ".userInfo"]: {
+            uid: designerId,
+            displayName: design?.author.fullName,
+            collection: design?.name,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+          [combinedId + ".lastMessage"]: {
+            text: `Helo ${design?.author.fullName}, I already checkout your design!`,
+          },
+        })
+
+        await updateDoc(doc(db, "userChats", designerId), {
+          [combinedId + ".userInfo"]: {
+            uid: userId,
+            displayName: authData.user.fullName,
+            collection: design?.name,
+          },
+          [combinedId + ".date"]: serverTimestamp(),
+        })
+      }
 
       router.refresh()
     }

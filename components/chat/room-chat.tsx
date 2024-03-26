@@ -1,19 +1,29 @@
-import { ArrowLeftOutlined, CloseOutlined } from "@ant-design/icons"
-import { Button, Divider, Form, FormInstance, Input } from "antd"
+import { ArrowLeftOutlined } from "@ant-design/icons"
+import { Divider, Form, FormInstance, Input } from "antd"
 import BoxChat from "components/chat/box-chat"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { ChatData, ChatDataI, ChatI, DataI } from "utils/chat-data"
+import { db } from "firebase-config"
+import { doc, onSnapshot } from "firebase/firestore"
+import { useEffect, useState } from "react"
 
 interface RoomChatI {
-  activeRoom: ChatDataI
+  activeRoom: any
   handleSubmitText: any
   typedChat: string
   form?: FormInstance<any>
 }
 
 const RoomChat = ({ handleSubmitText, form, activeRoom }: RoomChatI) => {
-  const { name, chat, total, type } = activeRoom as ChatDataI
+  const [messages, setMessages] = useState<any>({ messages: [] })
 
+  useEffect(() => {
+    const unSub = onSnapshot(doc(db, "chats", activeRoom.roomId), (doc) => {
+      doc.exists() && setMessages(doc.data())
+    })
+
+    return () => {
+      unSub()
+    }
+  }, [activeRoom.roomId])
   return (
     <div className="relative h-[86vh] w-full px-[29px] py-[24px]">
       <div className="absolute inset-x-[29px] top-[24px] z-[99] bg-white">
@@ -21,7 +31,7 @@ const RoomChat = ({ handleSubmitText, form, activeRoom }: RoomChatI) => {
           <div className="flex gap-[15px]">
             <ArrowLeftOutlined className="cursor-pointer" />
             <div>
-              <div className="text-[16px] font-bold text-[#000]">{name}</div>
+              <div className="text-[16px] font-bold text-[#000]">{activeRoom.user}</div>
             </div>
           </div>
         </div>
@@ -29,7 +39,7 @@ const RoomChat = ({ handleSubmitText, form, activeRoom }: RoomChatI) => {
       </div>
 
       <div className="max-h-[80vh] overflow-y-scroll pb-[50px] pr-[10px] pt-[80px]">
-        <BoxChat chat={chat} setEdit={undefined} handleDeleteText={undefined} />
+        <BoxChat chat={messages.messages} />
       </div>
 
       <div>

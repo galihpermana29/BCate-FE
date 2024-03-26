@@ -1,5 +1,5 @@
-import firebase from "firebase"
-
+import { initializeApp } from "firebase/app"
+import { getFirestore } from "firebase/firestore"
 const config = {
   apiKey: "AIzaSyCLVsUuNGvD3uopOAKj0dfhdZUuPHRMYBg",
   authDomain: "chat-bcate.firebaseapp.com",
@@ -10,18 +10,5 @@ const config = {
   measurementId: "G-3HEDKYN3J3",
 }
 
-
-const firebaseApp = !firebase.apps.length ? firebase.initializeApp(config) : firebase.app()
-
-export default firebaseApp;
-
-
-// let firebaseApp 
-// let db
-// if (!firebase.apps.length) {
-//   firebaseApp = firebase.initializeApp()
-
-//    db = firebaseApp.firestore()
-// }
-
-// export { db }
+export const app = initializeApp(config)
+export const db = getFirestore()
