@@ -1,6 +1,6 @@
 // structure of response/payload
 
-import { DesignPurpose, UserRole } from "utils/interface_type"
+import { DesignPurpose, DesignType, UserRole } from "utils/interface_type"
 
 /**
  * TODO: plase update all of this based on current response from be
@@ -85,4 +85,22 @@ export interface CreateTransactionRespose {
 export interface CreateTransactionPayload {
   user_id: number
   design_id: number
+}
+
+export interface UploadImageResponse {
+  message: string[]
+  data: string
+}
+
+export interface CreateDesignPayload {
+  author_id: number
+  name: string
+  certificate_uri: string | null
+  description: string
+  permission: string
+  image_uri: string[]
+  price: number
+  purpose: DesignPurpose
+  specification: string
+  type: DesignType
 }

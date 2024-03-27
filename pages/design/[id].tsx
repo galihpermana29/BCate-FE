@@ -104,6 +104,8 @@ function DesignDetailPage() {
     return design?.transactions.some((item) => item.userId === authData?.user.id) ?? false
   }
 
+  console.log(design?.transactions)
+
   return (
     <>
       {design && (

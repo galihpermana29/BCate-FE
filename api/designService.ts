@@ -2,10 +2,12 @@ import { DesignPurpose, DesignType, UserRole } from "utils/interface_type"
 import { ApiClass } from "./api"
 import { config } from "./config"
 import {
+  CreateDesignPayload,
   CreateTransactionPayload,
   CreateTransactionRespose,
   DesignDetailResponse,
   DesignResponse,
+  UploadImageResponse,
 } from "./response-interface"
 
 class DesignService extends ApiClass {
@@ -43,6 +45,24 @@ class DesignService extends ApiClass {
   public async getCollection(token: string, role: UserRole, id: number): Promise<DesignResponse> {
     try {
       const { data } = await this.axiosInstance.get<DesignResponse>(`design/collection-${role}/${id}`, config(token))
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async uploadImage(token: string, file: FormData): Promise<UploadImageResponse> {
+    try {
+      const { data } = await this.axiosInstance.post<UploadImageResponse>(`/upload`, file, config(token))
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async createDesign(token: string, payload: CreateDesignPayload) {
+    try {
+      const { data } = await this.axiosInstance.post<UploadImageResponse>(`/design`, payload, config(token))
       return data
     } catch (error) {
       throw error
