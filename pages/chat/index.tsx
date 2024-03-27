@@ -80,7 +80,7 @@ const UserChatRoom = () => {
 
       {!allChat && (
         <div className="flex h-screen flex-col items-center justify-center">
-          <h1 className="font-regular mb-[10px] text-[18px]">Currently you haven't any conversation</h1>
+          <h1 className="font-regular mb-[10px] text-[18px]">Currently you havent any conversation</h1>
           <Link href={"/design"} className="rounded-lg bg-black px-[10px] py-[15px] text-white hover:text-white">
             <h1 suppressHydrationWarning className="text-[13px]">
               Buy Design
