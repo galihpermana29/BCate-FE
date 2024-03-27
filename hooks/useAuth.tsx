@@ -14,12 +14,11 @@ export type UserAuthData = {
  */
 
 function useAuth() {
-  const [authData, setAuthData] = useState<UserAuthData | null | undefined>(null)
+  const [authData, setAuthData] = useState<UserAuthData | null | undefined>(undefined)
 
   useEffect(() => {
     if (localStorage) {
       const loginData = JSON.parse(localStorage.getItem("user-data")!) as UserAuthData
-
       setAuthData(loginData)
     }
   }, [])

@@ -9,12 +9,12 @@ function MainLayout({ children }: { children: ReactNode }) {
   const router = useRouter()
   const { authData } = useAuth()
 
-  if (authData === undefined) {
+  if (authData === null) {
     router.push("/auth/sign-in")
     return "loading"
   }
 
-  if (authData === null) {
+  if (authData === undefined) {
     return <Spin />
   }
 
