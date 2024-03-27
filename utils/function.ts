@@ -28,3 +28,8 @@ export function truncateText(text: string, maxWords: number): string {
 
   return truncatedText
 }
+
+export function extractCloudinaryId(url: string): string {
+  const segments = url.split("/")
+  return segments[segments.length - 1]
+}

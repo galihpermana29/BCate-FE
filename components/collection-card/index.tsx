@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Design } from "api/response-interface"
 import useAuth from "hooks/useAuth"
 
-function CollectionCard({ image_uri, name, description, author, purpose }: Design) {
+function CollectionCard({ image_uri, name, description, author, purpose, id }: Design) {
   const { authData } = useAuth()
 
   return (
@@ -26,7 +26,7 @@ function CollectionCard({ image_uri, name, description, author, purpose }: Desig
             <div className="rounded-full border border-black px-2 py-1">Design by Request</div>
           )}
           <Link
-            href={authData?.user.role === "user" ? `/chat/${author.id}` : "/design/edit"}
+            href={authData?.user.role === "user" ? `/chat/${author.id}` : `/designer/sell?edit=${id}`}
             className="rounded-full bg-black px-4 py-1 text-white hover:bg-zinc-800"
           >
             {authData?.user.role === "designer" ? "Edit" : "Order Page"}
