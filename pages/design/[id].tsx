@@ -101,7 +101,7 @@ function DesignDetailPage() {
   }
 
   const isInTransactions = (): boolean => {
-    return design?.transactions.some((item) => item.userId === authData?.user.id) ?? false
+    return design?.transactions.some((item) => item.user_id === authData?.user.id) ?? false
   }
 
   console.log(design?.transactions)

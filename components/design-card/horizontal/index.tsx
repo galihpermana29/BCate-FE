@@ -8,7 +8,7 @@ function DesignCardHorizontal({ author, description, id, type, image_uri, transa
   const { authData } = useAuth()
 
   const isInTransactions = (): boolean => {
-    return transactions.some((item) => item.userId === authData?.user.id) ?? false
+    return transactions.some((item) => item.user_id === authData?.user.id) ?? false
   }
 
   return (

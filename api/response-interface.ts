@@ -61,8 +61,8 @@ export interface Design {
 
 export interface Transaction {
   id: number
-  designId: number
-  userId: number
+  design_id: number
+  user_id: number
   revision?: string
   createdAt: Date
 }

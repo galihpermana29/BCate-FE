@@ -36,7 +36,7 @@ function CollectionPage() {
               })}
             </div>
           </section>
-          <section className="relative flex h-screen w-full basis-2/5 flex-col items-center justify-center gap-3 overflow-hidden rounded-lg p-10 text-center text-white">
+          <section className="relative flex h-screen w-full shrink-0 basis-2/5 flex-col items-center justify-center gap-3 overflow-hidden rounded-lg p-10 text-center text-white">
             <Image src={"/assets/img/banner-collection.png"} alt="Banner Image" fill className="-z-10 object-cover" />
 
             <h2 className="text-2xl font-bold">My Collection</h2>
