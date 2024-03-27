@@ -3,10 +3,13 @@ import { ApiClass } from "./api"
 import { config } from "./config"
 import {
   CreateDesignPayload,
+  CreateDesignResponse,
   CreateTransactionPayload,
   CreateTransactionRespose,
   DesignDetailResponse,
   DesignResponse,
+  UpdateDesignPayload,
+  UpdateDesignResponse,
   UploadImageResponse,
 } from "./response-interface"
 
@@ -60,9 +63,18 @@ class DesignService extends ApiClass {
     }
   }
 
-  public async createDesign(token: string, payload: CreateDesignPayload) {
+  public async createDesign(token: string, payload: CreateDesignPayload): Promise<CreateDesignResponse> {
     try {
-      const { data } = await this.axiosInstance.post<UploadImageResponse>(`/design`, payload, config(token))
+      const { data } = await this.axiosInstance.post<CreateDesignResponse>(`/design`, payload, config(token))
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async updateDesign(token: string, id: number, payload: UpdateDesignPayload): Promise<UpdateDesignResponse> {
+    try {
+      const { data } = await this.axiosInstance.put<UpdateDesignResponse>(`/design/${id}`, payload, config(token))
       return data
     } catch (error) {
       throw error

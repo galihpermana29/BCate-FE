@@ -1,8 +1,9 @@
 import { DeleteOutlined } from "@ant-design/icons"
 import { Button, Form, FormProps, Input, message, Select, Upload, type UploadProps } from "antd"
 import Image from "next/image"
+import { useSearchParams } from "next/navigation"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { DesignAPI } from "api/designService"
 import MainLayout from "components/layouts/main-layout"
 import useAuth from "hooks/useAuth"
@@ -28,10 +29,13 @@ function SellPage() {
   const [certificateImageURL, setCertificateImageURL] = useState<string | null>(null)
   const [imagesURL, setImagesURL] = useState<string[]>([])
 
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<FieldType>()
 
   const { authData } = useAuth()
   const router = useRouter()
+  const params = useSearchParams()
+
+  const editDesignId = params.get("edit")
 
   const handleUploadCertificate = async (options: any) => {
     const { file, onError, onSuccess } = options
@@ -88,16 +92,50 @@ function SellPage() {
       values.certificate_uri = certificateImageURL as string
       values.image_uri = imagesURL
 
-      await DesignAPI.createDesign(authData?.token!, {
-        ...values,
-        author_id: authData?.user.id!,
-      })
+      if (editDesignId) {
+        await DesignAPI.updateDesign(authData?.token!, parseInt(editDesignId), { ...values })
+      } else {
+        await DesignAPI.createDesign(authData?.token!, {
+          ...values,
+          author_id: authData?.user.id!,
+        })
+      }
 
       router.push("/designer/collection")
     } catch (e) {
       console.log(e)
     }
   }
+
+  useEffect(() => {
+    const fetchDesignDetail = async () => {
+      try {
+        const { data } = await DesignAPI.getById(editDesignId!, authData?.token!)
+
+        setCertificateImageURL(data.certificate_uri)
+        setImagesURL(data.image_uri)
+
+        form.setFieldsValue({
+          name: data.name,
+          certificate_uri: data.certificate_uri,
+          description: data.description,
+          image_uri: data.image_uri,
+          permission: data.permission,
+          price: data.price,
+          purpose: data.purpose,
+          specification: data.specification,
+          type: data.type,
+        })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    if (editDesignId) {
+      fetchDesignDetail()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editDesignId, authData])
 
   return (
     <MainLayout>
@@ -230,8 +268,8 @@ function SellPage() {
                   rules={[{ required: true, message: "Permission is required" }]}
                 >
                   <Select id="permission" placeholder={"Permission"} className="placeholder:text-black">
-                    <Select.Option value="public">Public</Select.Option>
-                    <Select.Option value="personal">Personal</Select.Option>
+                    <Select.Option value="public_use">Public</Select.Option>
+                    <Select.Option value="personal_use">Personal</Select.Option>
                   </Select>
                 </Form.Item>
               </div>
