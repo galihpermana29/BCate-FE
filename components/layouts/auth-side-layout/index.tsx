@@ -1,7 +1,8 @@
-import useAuth from "hooks/useAuth"
+import Head from "next/head"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { ReactNode } from "react"
+import useAuth from "hooks/useAuth"
 
 function AuthSideLayout({ children }: { children: ReactNode }) {
   const router = useRouter()
@@ -14,6 +15,10 @@ function AuthSideLayout({ children }: { children: ReactNode }) {
 
   return (
     <main className="relative mx-auto flex w-full max-w-screen-2xl flex-col gap-5 px-5 py-10 sm:p-10 md:flex-row md:gap-20 md:p-20">
+      <Head>
+        <title>BCate</title>
+      </Head>
+
       <Image src={"/assets/img/bg-auth-2.png"} alt="Dackground" fill className="fixed -z-20 object-cover" />
       <section className="basis-2/5 text-white md:mt-20">
         <h2 className="text-4xl font-semibold md:mb-3">Join with BCate</h2>

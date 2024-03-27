@@ -3,12 +3,12 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { DesignAPI } from "api/designService"
 import { Design, DesignResponse } from "api/response-interface"
-import DesignCardVertical from "components/design-card/vertical"
+import DesignCardHorizontal from "components/design-card/horizontal"
 import MainLayout from "components/layouts/main-layout"
 import useAuth from "hooks/useAuth"
 import { DesignType } from "utils/interface_type"
 
-function DesignPage() {
+function DesignRequestPage() {
   const [currentType, setCurrentType] = useState<DesignType>(null)
   const [designs, setDesigns] = useState<Design[]>([])
 
@@ -20,9 +20,9 @@ function DesignPage() {
         let res: DesignResponse
 
         if (currentType) {
-          res = await DesignAPI.getAll(authData?.token ?? "", "design", currentType)
+          res = await DesignAPI.getAll(authData?.token ?? "", "requested", currentType)
         } else {
-          res = await DesignAPI.getAll(authData?.token ?? "", "design")
+          res = await DesignAPI.getAll(authData?.token ?? "", "requested")
         }
 
         setDesigns(res.data)
@@ -51,10 +51,11 @@ function DesignPage() {
               <div key={index} className="relative aspect-[16/7] w-full bg-zinc-100">
                 <Image
                   src={
-                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    "https://images.unsplash.com/photo-1606744824163-985d376605aa?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                   }
                   alt="Carouse Image"
                   fill
+                  className="object-cover"
                 />
               </div>
             )
@@ -63,10 +64,10 @@ function DesignPage() {
 
         <section className="mt-10 flex flex-col justify-between gap-10 lg:flex-row lg:items-center lg:gap-20">
           <h1 className="shrink-0 text-4xl font-medium sm:text-5xl md:text-6xl lg:text-7xl">
-            Simply Elegant <span className="text-zinc-500">&</span> <br /> Minimalist.
+            Classic <span className="text-zinc-500">&</span> <br /> Simple.
           </h1>
           <p className="text-gray-500">
-            <b className="text-black">Spectacular</b> elegance of minimalist architectural home mesmerizes.
+            <b className="text-black">Timeless</b> elegance meets simplicity in this classic furniture piece.
           </p>
         </section>
 
@@ -93,10 +94,10 @@ function DesignPage() {
             </div>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          <div className="mt-10 flex flex-col gap-4 sm:grid-cols-2 md:grid-cols-3">
             {designs.length > 0 &&
               designs.map((design, index) => {
-                return <DesignCardVertical key={index} {...design} />
+                return <DesignCardHorizontal key={index} {...design} />
               })}
           </div>
         </section>
@@ -105,4 +106,4 @@ function DesignPage() {
   )
 }
 
-export default DesignPage
+export default DesignRequestPage
