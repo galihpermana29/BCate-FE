@@ -7,13 +7,13 @@ interface ChatBoxI {
 }
 
 export const AllChat = ({ allChat, setActiveRoom }: ChatBoxI) => {
-  console.log(allChat, "asdad")
+  console.log(Object.entries(allChat), "asdad")
   return (
     <div className="min-h-[530px] w-full px-[15px]">
       <div className="mb-[15px] text-[25px] font-semibold text-black">All Chat</div>
       <div className="py-[24px]">
         {Object.entries(allChat)
-          .sort((a: any, b: any) => b[0].date - a[0].date)
+          .sort((a: any, b: any) => b[1].date - a[1].date)
           .map((data: any, idx: number) => {
             return (
               <div
