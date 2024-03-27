@@ -1,4 +1,5 @@
 import useAuth from "hooks/useAuth"
+import { useEffect, useRef } from "react"
 
 interface BoxChatI {
   chat: any[]
@@ -6,21 +7,24 @@ interface BoxChatI {
 
 export default function BoxChat({ chat }: BoxChatI) {
   const { authData } = useAuth()
+  const ref: any = useRef()
+  console.log(chat, "chat")
+  useEffect(() => {
+    if (ref.current) {
+      ref.current!.scrollIntoView({
+        behavior: "smooth",
+      })
+    }
+  }, [chat])
   return (
     <>
       {chat.map((data, idx) => (
-        <div key={idx}>
+        <div key={idx} ref={ref}>
           <div
             className={`my-[8px] flex flex-col  ${
               data.senderId === authData?.user.id?.toString() ? "items-end" : "items-start"
             }`}
           >
-            <div
-              className={` ${data.senderId === authData?.user.id?.toString() ? "text-[#E2E8F0]" : "text-[#F1F7FF]"}`}
-            >
-              {data.senderId === authData?.user.id?.toString() ? "You" : data.from}
-            </div>
-
             <div className="flex items-start gap-[10px]">
               <div
                 className={`max-w-[500px] rounded-[5px] text-[14px] ${

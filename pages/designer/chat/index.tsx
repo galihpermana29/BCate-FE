@@ -1,4 +1,4 @@
-import { Button, Form } from "antd"
+import { Form } from "antd"
 import { AllChat } from "components/chat/all-chat"
 import RoomChat from "components/chat/room-chat"
 import MainLayout from "components/layouts/main-layout"
@@ -21,7 +21,6 @@ const UserChatRoom = () => {
   const { authData } = useAuth()
 
   const handleSubmitChat = async (value: any) => {
-    console.log(activeRoom, "rpp,")
     const userId: string = authData!.user.id!.toString()
     await updateDoc(doc(db, "chats", activeRoom.roomId), {
       messages: arrayUnion({
@@ -45,6 +44,7 @@ const UserChatRoom = () => {
       },
       [activeRoom.roomId + ".date"]: serverTimestamp(),
     })
+
     form.resetFields()
   }
 
@@ -81,9 +81,9 @@ const UserChatRoom = () => {
       {!allChat && (
         <div className="flex h-screen flex-col items-center justify-center">
           <h1 className="font-regular mb-[10px] text-[18px]">Currently you haven't any conversation</h1>
-          <Link href={"/design"} className="rounded-lg bg-black px-[10px] py-[15px] text-white hover:text-white">
+          <Link href={"/designer/sell"} className="rounded-lg bg-black px-[10px] py-[15px] text-white hover:text-white">
             <h1 suppressHydrationWarning className="text-[13px]">
-              Buy Design
+              Sell Design
             </h1>
           </Link>
         </div>

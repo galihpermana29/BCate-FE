@@ -7,7 +7,6 @@ interface ChatBoxI {
 }
 
 export const AllChat = ({ allChat, setActiveRoom }: ChatBoxI) => {
-  console.log(Object.entries(allChat), "asdad")
   return (
     <div className="min-h-[530px] w-full px-[15px]">
       <div className="mb-[15px] text-[25px] font-semibold text-black">All Chat</div>
@@ -18,7 +17,13 @@ export const AllChat = ({ allChat, setActiveRoom }: ChatBoxI) => {
             return (
               <div
                 key={idx}
-                onClick={() => setActiveRoom({ roomId: Object.keys(allChat)[idx], user: data[1].userInfo.displayName })}
+                onClick={() =>
+                  setActiveRoom({
+                    roomId: Object.keys(allChat)[idx],
+                    user: data[1].userInfo.displayName,
+                    userId: data[1].userInfo.uid,
+                  })
+                }
               >
                 <LandingChat data={data[1]} />
                 <Divider />

@@ -36,15 +36,16 @@ function DesignDetailPage() {
 
   const handleTransaction = async () => {
     if (authData?.user.id && params.id && authData.token) {
+      const userId: string = authData.user.id.toString()
+      const designerId: string = design!.author.id!.toString()
+
       const payload: CreateTransactionPayload = {
         user_id: authData.user.id,
         design_id: parseInt(params.id as string),
       }
-      console.log(payload, "payload")
+
       await DesignAPI.createTransaction(payload, authData.token)
 
-      const userId: string = authData.user.id.toString()
-      const designerId: string = params.id as string
       const collectionId: string = params.id as string
 
       const combinedId: string =
@@ -66,6 +67,7 @@ function DesignDetailPage() {
 
         const currentUserExist = await getDoc(doc(db, "userChats", userId))
         const desginerExist = await getDoc(doc(db, "userChats", designerId))
+
         if (!currentUserExist.exists()) {
           await setDoc(doc(db, "userChats", userId), {})
         }
@@ -93,6 +95,9 @@ function DesignDetailPage() {
             collection: design?.name,
           },
           [combinedId + ".date"]: serverTimestamp(),
+          [combinedId + ".lastMessage"]: {
+            text: `Helo ${design?.author.fullName}, I already checkout your design!`,
+          },
         })
       }
 
