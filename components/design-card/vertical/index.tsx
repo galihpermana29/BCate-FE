@@ -18,12 +18,14 @@ function DesignCardVertical({ author, name, description, price, id, type, permis
           </div>
           <p className="font-semibold">{author.fullName}</p>
         </div>
-        <p>{description}</p>
+        <p className="line-clamp-2">{description}</p>
         <hr />
         <p>{price}</p>
         <div className="flex w-full justify-between gap-5">
           <div className="flex flex-col gap-2">
-            <div className="w-fit rounded-full border border-black px-3 py-1 text-center">{permission}</div>
+            <div className="w-fit rounded-full border border-black px-3 py-1 text-center">
+              {permission === "personal_use" ? "Personal Use" : "Public Use"}
+            </div>
             <div className="w-fit rounded-full border border-black px-3 py-1 text-center capitalize">{type}</div>
           </div>
           <Link
