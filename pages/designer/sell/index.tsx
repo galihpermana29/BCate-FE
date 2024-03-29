@@ -61,16 +61,18 @@ function SellPage() {
 
     formData.append("image", file)
 
-    try {
-      const { data } = await DesignAPI.uploadImage(authData?.token!, formData)
-      if (data) {
-        setImagesURL((prev) => [...prev, data])
-        onSuccess()
-      } else {
+    if (imagesURL.length <= 2) {
+      try {
+        const { data } = await DesignAPI.uploadImage(authData?.token!, formData)
+        if (data) {
+          setImagesURL((prev) => [...prev, data])
+          onSuccess()
+        } else {
+          onError()
+        }
+      } catch (e) {
         onError()
       }
-    } catch (e) {
-      onError()
     }
   }
 
