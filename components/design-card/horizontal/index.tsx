@@ -39,7 +39,7 @@ function DesignCardHorizontal({ author, description, id, type, image_uri, transa
         <div className="flex shrink-0 flex-col justify-center gap-2 text-sm">
           <Button
             href={`/chat/${author.id}`}
-            disabled={isInTransactions()}
+            disabled={!isInTransactions()}
             className="h-fit border-black px-10 py-2 transition-colors duration-150 hover:bg-zinc-100"
           >
             Send Message

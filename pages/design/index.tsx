@@ -7,6 +7,7 @@ import DesignCardVertical from "components/design-card/vertical"
 import MainLayout from "components/layouts/main-layout"
 import useAuth from "hooks/useAuth"
 import { DesignType } from "utils/interface_type"
+import { buyDesignImages } from "data/buy-design-images"
 
 function DesignPage() {
   const [currentType, setCurrentType] = useState<DesignType>(null)
@@ -46,16 +47,10 @@ function DesignPage() {
     <>
       <MainLayout>
         <Carousel autoplay>
-          {[...Array(3)].map((_, index) => {
+          {buyDesignImages.map((url, index) => {
             return (
               <div key={index} className="relative aspect-[16/7] w-full bg-zinc-100">
-                <Image
-                  src={
-                    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  }
-                  alt="Carouse Image"
-                  fill
-                />
+                <Image src={url} alt="Carouse Image" fill className="object-cover" />
               </div>
             )
           })}

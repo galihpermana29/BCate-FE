@@ -73,7 +73,6 @@ function DesignerTransactionDetailPage() {
   const handleRevision = async () => {
     try {
       const res = await DesignAPI.updateTransaction(authData?.token!, { revision: imagesURL }, params.id as string)
-      console.log(res)
     } catch (e) {
       console.log(e)
     }

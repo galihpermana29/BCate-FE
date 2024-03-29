@@ -63,7 +63,7 @@ export interface Transaction {
   id: number
   design_id: number
   user: User
-  revision?: string
+  revision?: string[]
   createdAt: Date
 }
 
