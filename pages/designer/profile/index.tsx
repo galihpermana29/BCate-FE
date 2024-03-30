@@ -2,7 +2,7 @@ import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons"
 import { Button, Form, FormProps, Input, message, Upload, UploadProps } from "antd"
 import { AuthenticationAPI } from "api/authService"
 import { DesignAPI } from "api/designService"
-import { LoginData, UpdateProfilePayload } from "api/response-interface"
+import { UpdateProfilePayload } from "api/response-interface"
 import MainLayout from "components/layouts/main-layout"
 import useAuth from "hooks/useAuth"
 import Image from "next/image"
@@ -18,7 +18,6 @@ type FieldType = {
 }
 
 function DesignerProfilePage() {
-  const [showPassword, setShowPassword] = useState(false)
   const [imageURL, setImageURL] = useState<string | null>(null)
 
   const { authData } = useAuth()

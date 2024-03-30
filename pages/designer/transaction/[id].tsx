@@ -194,6 +194,20 @@ function DesignerTransactionDetailPage() {
           )
         })}
       </section>
+      {transaction?.revision && (
+        <section className="mt-10">
+          <h3 className="mb-2 text-2xl font-medium">Revision</h3>
+          <div className="grid grid-cols-3 gap-5">
+            {transaction.revision.map((uri) => {
+              return (
+                <div className="relative aspect-video w-full overflow-hidden rounded-md">
+                  <Image src={uri} alt="Design Image" fill className="object-cover" />
+                </div>
+              )
+            })}
+          </div>
+        </section>
+      )}
     </MainLayout>
   )
 }
