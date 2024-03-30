@@ -7,9 +7,11 @@ import { DesignAPI } from "api/designService"
 import { CreateTransactionPayload, Design } from "api/response-interface"
 import MainLayout from "components/layouts/main-layout"
 import useAuth from "hooks/useAuth"
+import { extractCloudinaryId } from "utils/function"
 
 function DesignRequestDetailPage() {
   const [design, setDesign] = useState<Design>()
+  const [revisions, setRevisions] = useState<string[] | null>(null)
 
   const params = useParams()
   const router = useRouter()
@@ -21,6 +23,12 @@ function DesignRequestDetailPage() {
       try {
         const res = await DesignAPI.getById(params.id as string, authData?.token!)
         setDesign(res.data)
+
+        const transactions = res.data.transactions
+
+        transactions.forEach(({ user, revision }) => {
+          if (user.id === authData?.user.id && revision) setRevisions(revision)
+        })
       } catch (e) {
         console.log(e)
       }
@@ -43,7 +51,7 @@ function DesignRequestDetailPage() {
   }
 
   const isInTransactions = (): boolean => {
-    return design?.transactions.some((item) => item.user_id === authData?.user.id) ?? false
+    return design?.transactions.some((item) => item.user.id === authData?.user.id) ?? false
   }
 
   return (
@@ -87,7 +95,7 @@ function DesignRequestDetailPage() {
               )}
               {isInTransactions() && (
                 <Link
-                  href={"/chat"}
+                  href={`/chat/${design.author.id}`}
                   className="m-0 mt-5 h-fit w-fit rounded-md bg-black px-5 py-3 text-sm text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
                 >
                   Ask The Designer
@@ -96,22 +104,36 @@ function DesignRequestDetailPage() {
             </div>
             <div className="flex w-full basis-3/4 flex-col gap-5 text-sm">
               <p>{design.description}</p>
+              {revisions && (
+                <div className="flex flex-col gap-5">
+                  <h3 className="text-xl font-semibold">Requested Design</h3>
+                  <div className="flex flex-col gap-2">
+                    {revisions.map((uri) => {
+                      return (
+                        <Link href={uri} download target={"_blank"} className="underline">
+                          {extractCloudinaryId(uri)}.jpg
+                        </Link>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
               <div className="flex flex-col gap-5">
                 <h3 className="text-xl font-semibold">Professional details</h3>
                 <div className="flex flex-col gap-5 md:flex-row md:gap-20">
                   <div className="flex flex-col gap-5">
                     <div>
-                      <h3 className="font-semibold">Professional Name</h3>
+                      <h4 className="font-semibold">Professional Name</h4>
                       <p>{design.author.fullName}</p>
                     </div>
                     <div>
-                      <h3 className="font-semibold">Professional Experience</h3>
-                      <p>{design.author.fullName}</p>
+                      <h4 className="font-semibold">Professional Experience</h4>
+                      <p>{design.author.additional?.years_experience}</p>
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-semibold">Specialty</h3>
-                    <p>{design.author.fullName}</p>
+                    <h4 className="font-semibold">Specialty</h4>
+                    <p>{design.author.additional?.speciality}</p>
                   </div>
                 </div>
               </div>

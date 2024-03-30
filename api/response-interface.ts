@@ -62,8 +62,8 @@ export interface Design {
 export interface Transaction {
   id: number
   design_id: number
-  user_id: number
-  revision?: string
+  user: User
+  revision?: string[]
   createdAt: Date
 }
 
@@ -125,4 +125,42 @@ export interface UpdateDesignPayload {
 export interface UpdateDesignResponse {
   message: string[]
   data: number
+}
+
+export interface TransactionResponse {
+  message: string[]
+  data: Design[]
+}
+
+export interface TransactionDetailResponse {
+  message: string[]
+  data: Design
+}
+
+export interface UpdateTransactionPayload {
+  revision: string[]
+}
+
+export interface UpdateTransactionResponse {
+  message: string[]
+  data: number
+}
+
+export interface UpdateProfilePayload {
+  fullName?: string
+  profile_picture?: string | null
+  additional: {
+    speciality?: string
+    years_experience?: number
+  }
+}
+
+export interface UpdateProfileResponse {
+  message: string[]
+  data: number
+}
+
+export interface GetUserResponse {
+  message: string[]
+  data: User
 }

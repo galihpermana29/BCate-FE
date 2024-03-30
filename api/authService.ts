@@ -1,9 +1,13 @@
 import { ApiClass } from "./api"
+import { config } from "./config"
 import {
+  GetUserResponse,
   RootLoginPayloadI,
   RootLoginResponseI,
   RootRegisterPayloadI,
   RootRegisterResponseI,
+  UpdateProfilePayload,
+  UpdateProfileResponse,
 } from "./response-interface"
 
 class AuthenticationServices extends ApiClass {
@@ -23,6 +27,24 @@ class AuthenticationServices extends ApiClass {
   public async register(payload: RootRegisterPayloadI): Promise<RootRegisterResponseI> {
     try {
       const { data } = await this.axiosInstance.post<RootRegisterResponseI>("/auth/register", payload)
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async updateProfile(token: string, id: number, payload: UpdateProfilePayload) {
+    try {
+      const { data } = await this.axiosInstance.put<UpdateProfileResponse>(`/user/${id}`, payload, config(token))
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async getProfileById(token: string, id: number) {
+    try {
+      const { data } = await this.axiosInstance.get<GetUserResponse>(`/user/${id}`, config(token))
       return data
     } catch (error) {
       throw error

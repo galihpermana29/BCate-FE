@@ -8,7 +8,7 @@ function DesignCardHorizontal({ author, description, id, type, image_uri, transa
   const { authData } = useAuth()
 
   const isInTransactions = (): boolean => {
-    return transactions.some((item) => item.user_id === authData?.user.id) ?? false
+    return transactions.some((item) => item.user.id === authData?.user.id) ?? false
   }
 
   return (
@@ -20,7 +20,7 @@ function DesignCardHorizontal({ author, description, id, type, image_uri, transa
         <div className="flex w-full flex-col justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex h-fit items-center gap-2">
-              <div className="aspect-square h-fit w-7 rounded-full bg-zinc-100">
+              <div className="relative aspect-square h-fit w-7 overflow-hidden rounded-full bg-zinc-100">
                 {author.profile_picture && (
                   <Image src={author.profile_picture} alt="Card Image" fill className="object-cover" />
                 )}
@@ -39,7 +39,7 @@ function DesignCardHorizontal({ author, description, id, type, image_uri, transa
         <div className="flex shrink-0 flex-col justify-center gap-2 text-sm">
           <Button
             href={`/chat/${author.id}`}
-            disabled={isInTransactions()}
+            disabled={!isInTransactions()}
             className="h-fit border-black px-10 py-2 transition-colors duration-150 hover:bg-zinc-100"
           >
             Send Message

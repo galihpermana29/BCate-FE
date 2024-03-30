@@ -8,8 +8,12 @@ import {
   CreateTransactionRespose,
   DesignDetailResponse,
   DesignResponse,
+  TransactionDetailResponse,
+  TransactionResponse,
   UpdateDesignPayload,
   UpdateDesignResponse,
+  UpdateTransactionPayload,
+  UpdateTransactionResponse,
   UploadImageResponse,
 } from "./response-interface"
 
@@ -75,6 +79,41 @@ class DesignService extends ApiClass {
   public async updateDesign(token: string, id: number, payload: UpdateDesignPayload): Promise<UpdateDesignResponse> {
     try {
       const { data } = await this.axiosInstance.put<UpdateDesignResponse>(`/design/${id}`, payload, config(token))
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async getAllTransactionsById(token: string, id: number): Promise<TransactionResponse> {
+    try {
+      const { data } = await this.axiosInstance.get<TransactionResponse>(`/design/transaction/${id}`, config(token))
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async getTransactionDetail(token: string, id: string): Promise<TransactionDetailResponse> {
+    try {
+      const { data } = await this.axiosInstance.get<TransactionDetailResponse>(`/transaction/${id}`, config(token))
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async updateTransaction(
+    token: string,
+    payload: UpdateTransactionPayload,
+    id: string
+  ): Promise<UpdateTransactionResponse> {
+    try {
+      const { data } = await this.axiosInstance.put<UpdateTransactionResponse>(
+        `/transaction/${id}`,
+        payload,
+        config(token)
+      )
       return data
     } catch (error) {
       throw error
