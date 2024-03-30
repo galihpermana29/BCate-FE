@@ -145,3 +145,22 @@ export interface UpdateTransactionResponse {
   message: string[]
   data: number
 }
+
+export interface UpdateProfilePayload {
+  fullName?: string
+  profile_picture?: string | null
+  additional: {
+    speciality?: string
+    years_experience?: number
+  }
+}
+
+export interface UpdateProfileResponse {
+  message: string[]
+  data: number
+}
+
+export interface GetUserResponse {
+  message: string[]
+  data: User
+}

@@ -30,7 +30,7 @@ export const userNavMenus: NavMenuItem[] = [
 
 export const designerNavMenus: NavMenuItem[] = [
   {
-    path: "/profile",
+    path: "/designer/profile",
     label: "Profile",
     image: "profile",
   },

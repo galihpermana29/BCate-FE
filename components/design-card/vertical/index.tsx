@@ -11,7 +11,7 @@ function DesignCardVertical({ author, name, description, price, id, type, permis
       <div className="flex flex-col gap-2 p-5 font-code text-sm">
         <h3 className="text-lg font-medium">{name}</h3>
         <div className="flex items-center gap-2">
-          <div className="aspect-square w-7 rounded-full bg-zinc-100">
+          <div className="relative aspect-square w-7 overflow-hidden rounded-full bg-zinc-100">
             {author.profile_picture && (
               <Image src={author.profile_picture} alt="Card Image" fill className="object-cover" />
             )}

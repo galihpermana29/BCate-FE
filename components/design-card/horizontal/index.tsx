@@ -20,7 +20,7 @@ function DesignCardHorizontal({ author, description, id, type, image_uri, transa
         <div className="flex w-full flex-col justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex h-fit items-center gap-2">
-              <div className="aspect-square h-fit w-7 rounded-full bg-zinc-100">
+              <div className="relative aspect-square h-fit w-7 overflow-hidden rounded-full bg-zinc-100">
                 {author.profile_picture && (
                   <Image src={author.profile_picture} alt="Card Image" fill className="object-cover" />
                 )}
