@@ -21,6 +21,14 @@ function DesignDetailPage() {
 
   const { authData } = useAuth()
 
+  const userId: any = authData ? authData!.user!.id!.toString() : null
+  const designerId: any = design ? design!.author.id!.toString() : null
+
+  const collectionId: any = params ? (params.id as string) : null
+
+  const combinedId: string =
+    parseInt(userId) > parseInt(designerId) ? userId + designerId + collectionId : designerId + userId + collectionId
+
   useEffect(() => {
     const getDesignDetail = async () => {
       try {
@@ -36,8 +44,14 @@ function DesignDetailPage() {
 
   const handleTransaction = async () => {
     if (authData?.user.id && params.id && authData.token) {
-      const userId: string = authData.user.id.toString()
-      const designerId: string = design!.author.id!.toString()
+      // const userId: string = authData.user.id.toString()
+      // const designerId: string = design!.author.id!.toString()
+      // const collectionId: string = params.id as string
+
+      // const combinedId: string =
+      //   parseInt(userId) > parseInt(designerId)
+      //     ? userId + designerId + collectionId
+      //     : designerId + userId + collectionId
 
       const payload: CreateTransactionPayload = {
         user_id: authData.user.id,
@@ -45,13 +59,6 @@ function DesignDetailPage() {
       }
 
       await DesignAPI.createTransaction(payload, authData.token)
-
-      const collectionId: string = params.id as string
-
-      const combinedId: string =
-        parseInt(userId) > parseInt(designerId)
-          ? userId + designerId + collectionId
-          : designerId + userId + collectionId
 
       const res = await getDoc(doc(db, "chats", combinedId))
 
@@ -154,7 +161,7 @@ function DesignDetailPage() {
               )}
               {isInTransactions() && (
                 <Link
-                  href={"/chat"}
+                  href={`/chat?roomId=${combinedId}&userId=${designerId}&user=${design.author.fullName}`}
                   className="m-0 h-fit w-fit rounded-md bg-black px-5 py-3 text-sm text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
                 >
                   Ask The Designer

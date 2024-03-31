@@ -3,9 +3,17 @@ import Image from "next/image"
 import Link from "next/link"
 import { Design } from "api/response-interface"
 import useAuth from "hooks/useAuth"
+import { useRouter } from "next/navigation"
 
 function DesignCardHorizontal({ author, description, id, type, image_uri, transactions }: Design) {
   const { authData } = useAuth()
+  const router = useRouter()
+  const userId: any = authData ? authData!.user!.id!.toString() : null
+  const designerId: string = author.id!.toString()
+  const collectionId: string = id as string
+
+  const combinedId: string =
+    parseInt(userId) > parseInt(designerId) ? userId + designerId + collectionId : designerId + userId + collectionId
 
   const isInTransactions = (): boolean => {
     return transactions.some((item) => item.user.id === authData?.user.id) ?? false
@@ -38,7 +46,7 @@ function DesignCardHorizontal({ author, description, id, type, image_uri, transa
         </div>
         <div className="flex shrink-0 flex-col justify-center gap-2 text-sm">
           <Button
-            href={`/chat/${author.id}`}
+            onClick={() => router.push(`/chat?roomId=${combinedId}&userId=${designerId}&user=${author.fullName}`)}
             disabled={!isInTransactions()}
             className="h-fit border-black px-10 py-2 transition-colors duration-150 hover:bg-zinc-100"
           >

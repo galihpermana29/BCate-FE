@@ -6,14 +6,25 @@ import { db } from "firebase-config"
 import { Timestamp, arrayUnion, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore"
 import useAuth from "hooks/useAuth"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 
 const UserChatRoom = () => {
-  const [activeTab, setActiveTab] = useState<"chat" | "task" | boolean>(false)
-  const [activeRoom, setActiveRoom] = useState<any>(null)
+  const user = useSearchParams().get("user")
+  const roomId = useSearchParams().get("roomId")
+  const userId = useSearchParams().get("userId")
 
-  const [typedChat, setTypedChat] = useState<string>("")
+  const [activeRoom, setActiveRoom] = useState<any>(
+    roomId
+      ? {
+          roomId,
+          user,
+          userId,
+        }
+      : null
+  )
+
   const [allChat, setAllChat] = useState<any>([])
 
   const [form] = Form.useForm()
@@ -21,7 +32,6 @@ const UserChatRoom = () => {
   const { authData } = useAuth()
 
   const handleSubmitChat = async (value: any) => {
-    console.log(activeRoom, "rpp,")
     const userId: string = authData!.user.id!.toString()
     await updateDoc(doc(db, "chats", activeRoom.roomId), {
       messages: arrayUnion({
@@ -72,7 +82,7 @@ const UserChatRoom = () => {
           </div>
           <div className="flex-[2]">
             {activeRoom && (
-              <RoomChat activeRoom={activeRoom} handleSubmitText={handleSubmitChat} typedChat={typedChat} form={form} />
+              <RoomChat activeRoom={activeRoom} handleSubmitText={handleSubmitChat} typedChat={null} form={form} />
             )}
           </div>
         </div>

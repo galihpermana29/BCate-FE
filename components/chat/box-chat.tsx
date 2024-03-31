@@ -8,7 +8,6 @@ interface BoxChatI {
 export default function BoxChat({ chat }: BoxChatI) {
   const { authData } = useAuth()
   const ref: any = useRef()
-  console.log(chat, "chat")
   useEffect(() => {
     if (ref.current) {
       ref.current!.scrollIntoView({

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 interface RoomChatI {
   activeRoom: any
   handleSubmitText: any
-  typedChat: string
+  typedChat: any
   form?: FormInstance<any>
 }
 

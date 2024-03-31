@@ -23,7 +23,6 @@ function DesignerTransactionDetailPage() {
       try {
         const { data } = await DesignAPI.getTransactionDetail(authData?.token!, params.id as string)
         setDesign(data)
-        console.log(data)
         const transactions = data.transactions
 
         transactions.forEach((transaction) => {
