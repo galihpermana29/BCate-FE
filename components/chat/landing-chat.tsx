@@ -9,6 +9,7 @@ interface LandingChatI {
 
 export default function LandingChat({ data, roomId }: LandingChatI) {
   const activeRoomId = useSearchParams().get("roomId")
+
   return (
     <div
       className={`flex cursor-pointer gap-[10px] px-[10px] py-[15px] transition-all duration-500 hover:bg-slate-100 ${

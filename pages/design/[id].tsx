@@ -1,4 +1,4 @@
-import { Button, Carousel } from "antd"
+import { Button, Carousel, message } from "antd"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
@@ -12,6 +12,12 @@ import { Timestamp, arrayUnion, doc, getDoc, serverTimestamp, setDoc, updateDoc 
 
 import { db } from "firebase-config"
 import { v4 as uuidv4 } from "uuid"
+
+import { ethers } from "ethers"
+
+import { useAuthWeb3 } from "context/web3AuthContext"
+import { contractAddress } from "utils/web3/address"
+import contractAbi from "utils/web3/abi.json"
 
 function DesignDetailPage() {
   const [design, setDesign] = useState<Design>()
@@ -29,6 +35,8 @@ function DesignDetailPage() {
   const combinedId: string =
     parseInt(userId) > parseInt(designerId) ? userId + designerId + collectionId : designerId + userId + collectionId
 
+  const { ethersProvider, walletAddress } = useAuthWeb3()
+
   useEffect(() => {
     const getDesignDetail = async () => {
       try {
@@ -44,68 +52,70 @@ function DesignDetailPage() {
 
   const handleTransaction = async () => {
     if (authData?.user.id && params.id && authData.token) {
-      // const userId: string = authData.user.id.toString()
-      // const designerId: string = design!.author.id!.toString()
-      // const collectionId: string = params.id as string
+      try {
+        const signer = await ethersProvider.getSigner()
+        const contracts = new ethers.Contract(contractAddress, contractAbi, signer)
+        const transaction = await contracts.purchaseItem(params.id)
+        await transaction.wait()
+        message.success(`Transaction successful: ${transaction.hash}`)
 
-      // const combinedId: string =
-      //   parseInt(userId) > parseInt(designerId)
-      //     ? userId + designerId + collectionId
-      //     : designerId + userId + collectionId
-
-      const payload: CreateTransactionPayload = {
-        user_id: authData.user.id,
-        design_id: parseInt(params.id as string),
-      }
-
-      await DesignAPI.createTransaction(payload, authData.token)
-
-      const res = await getDoc(doc(db, "chats", combinedId))
-
-      if (!res.exists()) {
-        await setDoc(doc(db, "chats", combinedId), {
-          messages: arrayUnion({
-            id: uuidv4(),
-            text: `Helo ${design?.author.fullName}, I already checkout your design!`,
-            senderId: authData.user.id.toString(),
-            date: Timestamp.now(),
-          }),
-        })
-
-        const currentUserExist = await getDoc(doc(db, "userChats", userId))
-        const desginerExist = await getDoc(doc(db, "userChats", designerId))
-
-        if (!currentUserExist.exists()) {
-          await setDoc(doc(db, "userChats", userId), {})
+        const payload: CreateTransactionPayload = {
+          user_id: authData.user.id,
+          design_id: parseInt(params.id as string),
         }
 
-        if (!desginerExist.exists()) {
-          await setDoc(doc(db, "userChats", designerId), {})
+        await DesignAPI.createTransaction(payload, authData.token)
+
+        const res = await getDoc(doc(db, "chats", combinedId))
+
+        if (!res.exists()) {
+          await setDoc(doc(db, "chats", combinedId), {
+            messages: arrayUnion({
+              id: uuidv4(),
+              text: `Helo ${design?.author.fullName}, I already checkout your design!`,
+              senderId: authData.user.id.toString(),
+              date: Timestamp.now(),
+            }),
+          })
+
+          const currentUserExist = await getDoc(doc(db, "userChats", userId))
+          const desginerExist = await getDoc(doc(db, "userChats", designerId))
+
+          if (!currentUserExist.exists()) {
+            await setDoc(doc(db, "userChats", userId), {})
+          }
+
+          if (!desginerExist.exists()) {
+            await setDoc(doc(db, "userChats", designerId), {})
+          }
+
+          await updateDoc(doc(db, "userChats", userId), {
+            [combinedId + ".userInfo"]: {
+              uid: designerId,
+              displayName: design?.author.fullName,
+              collection: design?.name,
+            },
+            [combinedId + ".date"]: serverTimestamp(),
+            [combinedId + ".lastMessage"]: {
+              text: `Helo ${design?.author.fullName}, I already checkout your design!`,
+            },
+          })
+
+          await updateDoc(doc(db, "userChats", designerId), {
+            [combinedId + ".userInfo"]: {
+              uid: userId,
+              displayName: authData.user.fullName,
+              collection: design?.name,
+            },
+            [combinedId + ".date"]: serverTimestamp(),
+            [combinedId + ".lastMessage"]: {
+              text: `Helo ${design?.author.fullName}, I already checkout your design!`,
+            },
+          })
         }
-
-        await updateDoc(doc(db, "userChats", userId), {
-          [combinedId + ".userInfo"]: {
-            uid: designerId,
-            displayName: design?.author.fullName,
-            collection: design?.name,
-          },
-          [combinedId + ".date"]: serverTimestamp(),
-          [combinedId + ".lastMessage"]: {
-            text: `Helo ${design?.author.fullName}, I already checkout your design!`,
-          },
-        })
-
-        await updateDoc(doc(db, "userChats", designerId), {
-          [combinedId + ".userInfo"]: {
-            uid: userId,
-            displayName: authData.user.fullName,
-            collection: design?.name,
-          },
-          [combinedId + ".date"]: serverTimestamp(),
-          [combinedId + ".lastMessage"]: {
-            text: `Helo ${design?.author.fullName}, I already checkout your design!`,
-          },
-        })
+      } catch (error) {
+        message.error("Transaction Fail")
+        return
       }
 
       router.refresh()

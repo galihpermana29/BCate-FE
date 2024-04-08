@@ -10,6 +10,7 @@ import "../styles/tailwind.css"
 import { WalletContextProvider } from "context/wallet-context"
 import { ConfigProvider } from "antd"
 import { ConfigProviderProps, ThemeConfig } from "antd/es/config-provider"
+import { AuthWeb3Provider } from "context/web3AuthContext"
 
 function MyApp({ Component, pageProps }: AppProps) {
   /**
@@ -56,7 +57,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <WagmiConfig config={config}>
       <WalletContextProvider config={config}>
         <ConfigProvider theme={themeConfig}>
-          <Component {...pageProps} />
+          <AuthWeb3Provider>
+            <Component {...pageProps} />
+          </AuthWeb3Provider>
         </ConfigProvider>
       </WalletContextProvider>
     </WagmiConfig>

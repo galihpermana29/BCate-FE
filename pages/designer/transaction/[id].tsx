@@ -71,12 +71,11 @@ function DesignerTransactionDetailPage() {
 
   const handleRevision = async () => {
     try {
-      const res = await DesignAPI.updateTransaction(authData?.token!, { revision: imagesURL }, params.id as string)
+      await DesignAPI.updateTransaction(authData?.token!, { revision: imagesURL }, params.id as string)
+      message.success("Revision has updated")
     } catch (e) {
       console.log(e)
     }
-
-    // router.refresh()
   }
 
   return (

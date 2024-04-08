@@ -60,7 +60,9 @@ export const WalletContextProvider = ({ children, config }: WalletContextI) => {
   const { data: accountBalance } = useBalance({
     address,
   })
-  const { chains, switchNetwork } = useSwitchNetwork()
+  const { chains, switchNetwork } = useSwitchNetwork({
+    chainId: 1029,
+  })
   /**
    * Value explanation
    * connect: function to connect with current exist provider in this case is the wallet provider

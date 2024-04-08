@@ -2,9 +2,9 @@ import { Spin } from "antd"
 import Head from "next/head"
 import { useRouter } from "next/navigation"
 import { ReactNode } from "react"
-import Header from "components/header"
 import SideNav from "components/side-nav"
 import useAuth from "hooks/useAuth"
+import CustomHeader from "components/header"
 
 function MainLayout({ children, withPadding = true }: { children: ReactNode; withPadding?: boolean }) {
   const router = useRouter()
@@ -25,7 +25,7 @@ function MainLayout({ children, withPadding = true }: { children: ReactNode; wit
         <title>BCate</title>
       </Head>
 
-      <Header />
+      <CustomHeader />
       <div className="flex">
         <SideNav />
         <main className={`w-full ${withPadding && "p-10 pl-5 md:pl-[7.5rem]"}`}>{children}</main>

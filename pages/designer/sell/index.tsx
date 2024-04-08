@@ -9,6 +9,10 @@ import MainLayout from "components/layouts/main-layout"
 import useAuth from "hooks/useAuth"
 import { extractCloudinaryId } from "utils/function"
 import { DesignPermission, DesignPurpose, DesignType } from "utils/interface_type"
+import { ethers } from "ethers"
+import { useAuthWeb3 } from "context/web3AuthContext"
+import { contractAddress } from "utils/web3/address"
+import contractAbi from "utils/web3/abi.json"
 
 const { TextArea } = Input
 
@@ -34,8 +38,10 @@ function SellPage() {
   const { authData } = useAuth()
   const router = useRouter()
   const params = useSearchParams()
+  const { ethersProvider } = useAuthWeb3()
 
   const editDesignId = params.get("edit")
+  const toWei = (num: number) => ethers.utils.parseEther(num.toString())
 
   const handleUploadCertificate = async (options: any) => {
     const { file, onError, onSuccess } = options
@@ -94,13 +100,35 @@ function SellPage() {
       values.certificate_uri = certificateImageURL as string
       values.image_uri = imagesURL
 
+      let productId
+
       if (editDesignId) {
-        await DesignAPI.updateDesign(authData?.token!, parseInt(editDesignId), { ...values })
+        const { data: itemId } = await DesignAPI.updateDesign(authData?.token!, parseInt(editDesignId), { ...values })
+        productId = itemId
       } else {
-        await DesignAPI.createDesign(authData?.token!, {
+        const { data: itemId } = await DesignAPI.createDesign(authData?.token!, {
           ...values,
           author_id: authData?.user.id!,
         })
+        productId = itemId
+      }
+
+      try {
+        const signer = await ethersProvider.getSigner()
+        const contracts = new ethers.Contract(contractAddress, contractAbi, signer)
+        const transaction = await contracts.addItem(
+          productId.toString(),
+          toWei(values.price),
+          values.certificate_uri,
+          values.purpose,
+          (authData?.user.id as number).toString()
+        )
+
+        await transaction.wait()
+        message.success(`Transaction successful: ${transaction.hash}`)
+      } catch (error) {
+        message.error("Transaction Fail")
+        console.log(error, "err")
       }
 
       router.push("/designer/collection")

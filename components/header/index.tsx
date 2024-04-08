@@ -1,3 +1,5 @@
+"use client"
+
 import { MenuOutlined } from "@ant-design/icons"
 import { Button, Drawer } from "antd"
 import Image from "next/image"
@@ -6,11 +8,13 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { userNavMenus } from "data/nav-menus"
 import useAuth from "hooks/useAuth"
+import { useAuthWeb3 } from "context/web3AuthContext"
 
-function Header() {
+function CustomHeader() {
+  const { walletAddress, isConnected, connectWallet, addBitTorrentChainToMetaMask } = useAuthWeb3()
   const [open, setOpen] = useState(false)
-  const router = useRouter()
 
+  const router = useRouter()
   const { authData } = useAuth()
 
   const showDrawer = () => {
@@ -55,9 +59,33 @@ function Header() {
               Sign out
             </Button>
           )}
-          <Button className="m-0 h-fit rounded-lg bg-black px-5 py-3 font-semibold text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300">
-            Connect Wallet
-          </Button>
+
+          {walletAddress ? (
+            <div>
+              {isConnected ? (
+                <Button
+                  onClick={connectWallet}
+                  className="m-0 h-fit rounded-lg bg-black px-5 py-3 font-semibold text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
+                >
+                  Connected to BitTorrent
+                </Button>
+              ) : (
+                <Button
+                  onClick={addBitTorrentChainToMetaMask}
+                  className="m-0 h-fit rounded-lg bg-black px-5 py-3 font-semibold text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
+                >
+                  Add BitTorrent Chain to MetaMask
+                </Button>
+              )}
+            </div>
+          ) : (
+            <Button
+              onClick={connectWallet}
+              className="m-0 h-fit rounded-lg bg-black px-5 py-3 font-semibold text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
+            >
+              Connect Wallets
+            </Button>
+          )}
         </div>
         <Button type="text" onClick={showDrawer} className="block p-0 md:hidden">
           <MenuOutlined className="-translate-y-1 text-2xl" />
@@ -89,9 +117,32 @@ function Header() {
               >
                 Sign in
               </Button>
-              <Button className="m-0 h-fit rounded-lg bg-black px-5 py-3 font-semibold text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300">
-                Connect Wallet
-              </Button>
+              {walletAddress ? (
+                <div>
+                  {isConnected ? (
+                    <Button
+                      onClick={connectWallet}
+                      className="m-0 h-fit rounded-lg bg-black px-5 py-3 font-semibold text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
+                    >
+                      Connected to BitTorrent
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={addBitTorrentChainToMetaMask}
+                      className="m-0 h-fit rounded-lg bg-black px-5 py-3 font-semibold text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
+                    >
+                      Add BitTorrent Chain to MetaMask
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <Button
+                  onClick={connectWallet}
+                  className="m-0 h-fit rounded-lg bg-black px-5 py-3 font-semibold text-white hover:bg-zinc-800 enabled:hover:border-black disabled:bg-zinc-300"
+                >
+                  Connect Wallets
+                </Button>
+              )}
             </div>
           </div>
         </Drawer>
@@ -100,4 +151,4 @@ function Header() {
   )
 }
 
-export default Header
+export default CustomHeader

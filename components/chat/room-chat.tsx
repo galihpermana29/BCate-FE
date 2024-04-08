@@ -1,7 +1,6 @@
 import { ArrowLeftOutlined } from "@ant-design/icons"
 import { Divider, Form, FormInstance, Input, message } from "antd"
 import { DesignAPI } from "api/designService"
-import { Design } from "api/response-interface"
 import BoxChat from "components/chat/box-chat"
 import { db } from "firebase-config"
 import { doc, onSnapshot } from "firebase/firestore"
@@ -20,7 +19,6 @@ const RoomChat = ({ handleSubmitText, form, activeRoom }: RoomChatI) => {
 
   const { authData } = useAuth()
   const [revisions, setRevisions] = useState<string[] | null>(null)
-
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", activeRoom.roomId), (doc) => {
       doc.exists() && setMessages(doc.data())
@@ -34,10 +32,13 @@ const RoomChat = ({ handleSubmitText, form, activeRoom }: RoomChatI) => {
   useEffect(() => {
     const getDesignDetail = async () => {
       try {
-        const res = await DesignAPI.getById(activeRoom.roomId.split("")[2] as string, authData?.token!)
+        const splittedId = activeRoom.roomId.substring(2)
+        const res = await DesignAPI.getById(splittedId as string, authData?.token!)
         const transactions = res.data.transactions
+
         transactions.forEach(({ user, revision }) => {
           if (user.id === authData?.user.id && revision) setRevisions(revision)
+          else setRevisions(null)
         })
       } catch (e) {
         message.error("Error while getting the data")

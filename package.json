@@ -32,6 +32,7 @@
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
+    "ethers": "^5.7.2",
     "firebase": "^10.9.0",
     "lodash": "^4.17.21",
     "next": "^13.5.5",
@@ -42,6 +43,7 @@
     "tailwind-merge": "^1.14.0",
     "uuid": "^9.0.1",
     "wagmi": "^1.4.6",
+    "web3": "^4.1.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {
