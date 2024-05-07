@@ -5,7 +5,7 @@ import { Design } from "api/response-interface"
 import useAuth from "hooks/useAuth"
 import { useRouter } from "next/navigation"
 
-function DesignCardHorizontal({ author, description, id, type, image_uri, transactions }: Design) {
+function DesignCardHorizontal({ author, description, id, type, image_uri, transactions, name }: Design) {
   const { authData } = useAuth()
   const router = useRouter()
   const userId: any = authData ? authData!.user!.id!.toString() : null
@@ -35,6 +35,7 @@ function DesignCardHorizontal({ author, description, id, type, image_uri, transa
               </div>
               <p className="font-medium">{author.fullName}</p>
             </div>
+            <p className="line-clamp-2 font-code font-[600] text-black">{name}</p>
             <p className="line-clamp-2 font-code text-zinc-500">{description}</p>
           </div>
           <div>

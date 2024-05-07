@@ -19,6 +19,27 @@ const RoomChat = ({ handleSubmitText, form, activeRoom }: RoomChatI) => {
 
   const { authData } = useAuth()
   const [revisions, setRevisions] = useState<string[] | null>(null)
+
+  const handleDownload = () => {
+    const container = document.createElement("div")
+
+    revisions?.forEach((url, index) => {
+      const link = document.createElement("a")
+      link.href = url
+      link.target = "_blank"
+      link.download = `blueprint_${index + 1}.jpg` // You can adjust the file name here
+      container.appendChild(link)
+    })
+
+    document.body.appendChild(container)
+
+    container.querySelectorAll("a").forEach((link) => {
+      link.click()
+    })
+
+    document.body.removeChild(container)
+  }
+
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", activeRoom.roomId), (doc) => {
       doc.exists() && setMessages(doc.data())
@@ -36,17 +57,21 @@ const RoomChat = ({ handleSubmitText, form, activeRoom }: RoomChatI) => {
         const res = await DesignAPI.getById(splittedId as string, authData?.token!)
         const transactions = res.data.transactions
 
-        transactions.forEach(({ user, revision }) => {
-          if (user.id === authData?.user.id && revision) setRevisions(revision)
-          else setRevisions(null)
-        })
+        if (res.data.purpose === "requested") {
+          transactions.forEach(({ user, revision }) => {
+            if (user.id === authData?.user.id && revision) setRevisions(revision)
+            else setRevisions(null)
+          })
+        } else {
+          setRevisions([res.data.certificate_uri])
+        }
       } catch (e) {
         message.error("Error while getting the data")
       }
     }
-
+    console.log(authData, activeRoom, "???>>")
     if (authData && activeRoom.roomId) getDesignDetail()
-  }, [activeRoom.roomId])
+  }, [activeRoom.roomId, authData])
 
   return (
     <div className="relative h-[86vh] w-full px-[29px] py-[24px]">
@@ -71,11 +96,15 @@ const RoomChat = ({ handleSubmitText, form, activeRoom }: RoomChatI) => {
           <div className="absolute bottom-[75px] flex h-[80px] w-full items-center justify-center rounded-md bg-black">
             <div className="flex flex-1 items-center justify-between px-[20px]">
               <div className="text-white">Get your blueprints</div>
-              <a href={revisions[0]} download={"blueprint.jpg"} target="_blank">
-                <button type="submit" className="rounded bg-[#FFF] px-[16px] py-[8px] text-black">
-                  Download
-                </button>
-              </a>
+              {/* <a href={revisions[0]} download={"blueprint.jpg"} target="_blank"> */}
+              <button
+                onClick={handleDownload}
+                type="submit"
+                className="rounded bg-[#FFF] px-[16px] py-[8px] text-black"
+              >
+                Download
+              </button>
+              {/* </a> */}
             </div>
           </div>
         )}

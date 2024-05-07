@@ -179,7 +179,9 @@ function DesignDetailPage() {
               )}
             </div>
             <div className="flex w-full flex-col gap-5 text-sm">
-              <div className="w-fit rounded-md border border-black p-2 font-medium">Public Mass Production</div>
+              <div className="w-fit rounded-md border border-black p-2 font-medium">
+                {design.permission === "personal_use" ? "Personal Use" : "Public Mass"} Production
+              </div>
               <p>{design.description}</p>
               <div>
                 <h3 className="text-xl font-semibold">Spesification</h3>
